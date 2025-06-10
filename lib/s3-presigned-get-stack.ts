@@ -20,7 +20,8 @@ export class S3PresignedGetStack extends Stack {
       handler: 'presigned-get.handler',
       code: lambda.Code.fromAsset(path.join(__dirname, '../s3-presigned')),
       environment: {
-        BUCKET_NAME: 's3-get-presign',
+        BUCKET_NAME: 's3presign-test',
+        BUCKET_ARN: bucket.bucketArn
       },
       timeout: Duration.seconds(10),
     });
@@ -28,8 +29,8 @@ export class S3PresignedGetStack extends Stack {
     bucket.grantRead(presignLambda);
 
     presignLambda.addToRolePolicy(new iam.PolicyStatement({
-      actions: ['s3:GetObject'],
-      resources: [bucket.arnForObjects('*')],
+      actions: ['s3:GetObject','s3:ListBucket'],
+      resources: [bucket.bucketArn],
     }));
 
     // 🔗 API Gateway Integration
