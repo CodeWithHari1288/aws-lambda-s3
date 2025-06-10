@@ -1,21 +1,33 @@
-import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
-import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
+import { S3Client, GetObjectCommand } from "@aws-sdk/client-s3";
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 
-const client = new S3Client({ region: process.env.AWS_REGION });
+const s3 = new S3Client({ region: 'us-east-1' });
 
 export const handler = async (event: any) => {
-  const bucket = process.env.BUCKET_NAME!;
-  const key = event.queryStringParameters?.key || 'test-presigned-s3.txt';
+  const key = event.queryStringParameters?.key;
 
-  const command = new PutObjectCommand({
+  if (!key) {
+    return {
+      statusCode: 400,
+      body: JSON.stringify({ error: "Missing 'key' parameter" }),
+    };
+  }
+
+  const command = new GetObjectCommand({
     Bucket: 's3presign-test',
-    Key: key,
+    Key: 'test-presigned-s3',
   });
 
-  const signedUrl = await getSignedUrl(client, command, { expiresIn: 3600 });
-
-  return {
-    statusCode: 200,
-    body: JSON.stringify({ url: signedUrl }),
-  };
+  try {
+    const url = await getSignedUrl(s3, command, { expiresIn: 600 });
+    return {
+      statusCode: 200,
+      body: JSON.stringify({ url }),
+    };
+  } catch (err) {
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ error: err }),
+    };
+  }
 };

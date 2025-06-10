@@ -6,6 +6,7 @@ import { S3LifecycleStack } from '../lib/s3-lifecycle-stack';
 import { S3KmsEncryptionStack } from '../lib/s3-kms-stack';
 import { S3TableStack } from '../lib/s3-table-stack';
 import { S3PresignedUrlStack } from '../lib/s3-presigned-url';
+import { S3PresignedGetStack } from '../lib/s3-presigned-get-stack';
 
 const app = new cdk.App();
 new AwsLambdaS3Stack(app, 'AwsLambdaS3Stack', {
@@ -38,6 +39,14 @@ new S3KmsEncryptionStack(app, 'S3KMS', {
 // });
 
 new S3PresignedUrlStack(app, 'S3Presigned', {
+  env: {
+    account : process.env.CDK_DEFAULT_ACCOUNT,
+    region : 'us-east-1'
+}
+});
+
+
+new S3PresignedGetStack(app, 'S3PresignedGetStack', {
   env: {
     account : process.env.CDK_DEFAULT_ACCOUNT,
     region : 'us-east-1'
