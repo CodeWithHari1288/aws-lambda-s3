@@ -38,7 +38,7 @@ new S3KmsEncryptionStack(app, 'S3KMS', {
 // }
 // });
 
-new S3PresignedUrlStack(app, 'S3Presigned', {
+const stackPut = new S3PresignedUrlStack(app, 'S3Presigned', {
   env: {
     account : process.env.CDK_DEFAULT_ACCOUNT,
     region : 'us-east-1'
@@ -46,12 +46,14 @@ new S3PresignedUrlStack(app, 'S3Presigned', {
 });
 
 
-new S3PresignedGetStack(app, 'S3PresignedGetStack', {
+const stackGet = new S3PresignedGetStack(app, 'S3PresignedGetStack', {
   env: {
     account : process.env.CDK_DEFAULT_ACCOUNT,
     region : 'us-east-1'
 }
 });
+
+stackGet.addDependency(stackPut);
 
 // S3TableStack
 

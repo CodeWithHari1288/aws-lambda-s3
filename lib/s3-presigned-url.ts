@@ -28,8 +28,16 @@ export class S3PresignedUrlStack extends Stack {
       timeout: Duration.seconds(10),
     });
 
+    // console.log("88888888888888888888888 + "+bucket.bucketArn);
+    new cdk.CfnOutput(this, "bucketArnGet", {
+      value: bucket.bucketArn,
+      exportName: 'bucketArnGet',
+    });
     // Grant permissions
     bucket.grantPut(generateUrlFn);
+    // bucket.grantRead(generateUrlFn);
+    // bucket.grantWrite(generateUrlFn);
+
 
     // API Gateway to trigger Lambda
     const api = new apigateway.RestApi(this, 's3presignedrest', {
