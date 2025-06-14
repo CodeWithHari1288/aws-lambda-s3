@@ -1,4 +1,4 @@
-import { aws_lambda, CfnOutput, Duration, Stack, StackProps } from 'aws-cdk-lib';
+import { aws_lambda, CfnOutput, Duration, RemovalPolicy, Stack, StackProps } from 'aws-cdk-lib';
 import { Key } from 'aws-cdk-lib/aws-kms';
 import { Runtime, Code } from 'aws-cdk-lib/aws-lambda';
 import * as s3 from 'aws-cdk-lib/aws-s3';
@@ -16,7 +16,8 @@ export class S3KmsEncryptionStack extends Stack {
         const bucket = new s3.Bucket(this, 's3encryptedbucket', {
         encryption: s3.BucketEncryption.KMS,
         encryptionKey: kmsKey,
-        bucketName: "s3kms06"
+        bucketName: "s3kms06",
+        removalPolicy : RemovalPolicy.DESTROY
         });
 
         // new CfnOutput(this, 'KmsKeyOutput', {

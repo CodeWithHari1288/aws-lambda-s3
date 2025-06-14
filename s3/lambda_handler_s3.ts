@@ -5,7 +5,7 @@ export const handler = async () => {
 
    const client = new DynamoDBClient({region:"us-east-1"});
    const docClient = DynamoDBDocumentClient.from(client);
-   console.log("INSERTING IN ................."); 
+   console.log("Event  ................."); 
 
 //    const command = new PutCommand({
 //     TableName: "DummyTable",

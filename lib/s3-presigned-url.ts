@@ -14,7 +14,7 @@ export class S3PresignedUrlStack extends Stack {
     const bucket = new s3.Bucket(this, 'S3PresignedBucket', {
       removalPolicy: cdk.RemovalPolicy.DESTROY,
       autoDeleteObjects: true,
-      bucketName: 's3presign-test'
+      bucketName: 's3presign-test',
     });
 
     // Lambda Function
