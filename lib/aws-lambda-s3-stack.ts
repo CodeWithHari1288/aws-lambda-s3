@@ -1,5 +1,6 @@
 import * as cdk from 'aws-cdk-lib';
 import { Table, AttributeType } from 'aws-cdk-lib/aws-dynamodb';
+import { Vpc, GatewayVpcEndpointAwsService } from 'aws-cdk-lib/aws-ec2';
 import { PolicyStatement, Effect } from 'aws-cdk-lib/aws-iam';
 import { S3EventSource } from 'aws-cdk-lib/aws-lambda-event-sources';
 import { Bucket, EventType } from 'aws-cdk-lib/aws-s3';
@@ -38,6 +39,16 @@ export class AwsLambdaS3Stack extends cdk.Stack {
         type: AttributeType.STRING
       }
     });
+
+    //  const vpc = Vpc.fromLookup(this, 'ImportedVpc', {
+    //             vpcName: 'defaultVpc',
+    //             isDefault: true
+    //             });
+    //  // Add Gateway Endpoint for S3
+    // vpc.addGatewayEndpoint('S3GatewayEndpoint', {
+    //   service: GatewayVpcEndpointAwsService.S3,
+    // });
+  
 
         lambdaS3.addToRolePolicy(
            new PolicyStatement({

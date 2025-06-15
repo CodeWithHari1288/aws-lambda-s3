@@ -1,4 +1,5 @@
 import { Stack, StackProps, Duration, RemovalPolicy } from "aws-cdk-lib";
+import { InterfaceVpcEndpointAwsService, SubnetType, Vpc } from "aws-cdk-lib/aws-ec2";
 import { PolicyStatement } from "aws-cdk-lib/aws-iam";
 import { Code, Function, Runtime } from "aws-cdk-lib/aws-lambda";
 import { Bucket, CfnAccessPoint } from "aws-cdk-lib/aws-s3";
@@ -21,6 +22,17 @@ super(scope, id, props);
         bucket: bucket.bucketName,
         name: 'lambda-access',
         });
+
+        // const vpc = Vpc.fromLookup(this, 'ImportedVpc', {
+        //     vpcName: 'defaultVpc',
+        //     isDefault: true
+        //     });
+        //  vpc.addInterfaceEndpoint('S3InterfaceEndpoint', {
+        //     service: InterfaceVpcEndpointAwsService.S3,
+        //     subnets: {
+        //         subnetType: SubnetType.PRIVATE_ISOLATED,
+        //     },
+        //     });
 
         const lambdaAccessPoint = new Function(this, 'S3AccessPointLambda', {
             runtime: Runtime.NODEJS_18_X,
